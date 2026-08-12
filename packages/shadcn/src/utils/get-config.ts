@@ -299,18 +299,26 @@ function isAliasKey(
 }
 
 export function findCommonRoot(cwd: string, resolvedPath: string) {
-  const parts1 = cwd.split(path.sep)
-  const parts2 = resolvedPath.split(path.sep)
+  const isWindowsPath = (value: string) =>
+    /^[a-zA-Z]:[\\/]/.test(value) || value.startsWith("\\\\")
+  const pathApi =
+    isWindowsPath(cwd) || isWindowsPath(resolvedPath) ? path.win32 : path
+  const parts1 = pathApi.normalize(cwd).split(pathApi.sep)
+  const parts2 = pathApi.normalize(resolvedPath).split(pathApi.sep)
   const commonParts = []
+  const isCaseInsensitive = pathApi === path.win32
 
   for (let i = 0; i < Math.min(parts1.length, parts2.length); i++) {
-    if (parts1[i] !== parts2[i]) {
+    const part1 = isCaseInsensitive ? parts1[i].toLowerCase() : parts1[i]
+    const part2 = isCaseInsensitive ? parts2[i].toLowerCase() : parts2[i]
+
+    if (part1 !== part2) {
       break
     }
     commonParts.push(parts1[i])
   }
 
-  return commonParts.join(path.sep)
+  return commonParts.join(pathApi.sep)
 }
 
 // TODO: Cache this call.
