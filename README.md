@@ -1,3 +1,5 @@
+> **Repository provenance:** This repository currently contains the upstream shadcn/ui README and documentation. Review the commit history and upstream relationship before interpreting it as an independently authored UI library. Any original modifications should be described separately with links to the relevant commits or pull requests.
+
 # shadcn/ui
 
 A set of beautifully designed components that you can customize, extend, and build on. Start here then make it your own. Open Source. Open Code. **Use this to build your own component library**.
